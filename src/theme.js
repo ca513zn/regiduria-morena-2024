@@ -9,7 +9,7 @@ const theme = createTheme({
       main: "#581845", // Darker magenta from the cap
     },
     error: {
-      main: "#D9A382", // Skin tone as an accent color
+      main: "#ff0000", // Skin tone as an accent color
     },
     background: {
       default: "#FFFFFF", // White from the text

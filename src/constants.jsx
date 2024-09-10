@@ -42,3 +42,15 @@ export const latest_proposals = [
     },
   },
 ];
+
+export const statuses = {
+  pending: "Pendiente",
+  approved: "Aprobada",
+  rejected: "Rechazada",
+};
+
+export const status_colors = {
+  pending: "info",
+  approved: "success",
+  rejected: "error",
+};
