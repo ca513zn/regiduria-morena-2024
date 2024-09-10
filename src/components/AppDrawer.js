@@ -1,7 +1,15 @@
 import React from "react";
 import { Drawer, List, ListItem, ListItemText } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const AppDrawer = () => {
+  const menuItems = [
+    { text: "Inicio", path: "/" },
+    { text: "Propuestas", path: "/propuestas" },
+    { text: "Eventos", path: "/eventos" },
+    { text: "Contacto", path: "/contacto" },
+  ];
+
   return (
     <Drawer
       open={true}
@@ -9,20 +17,28 @@ const AppDrawer = () => {
       PaperProps={{
         sx: {
           paddingTop: 8,
-          paddingX: 1,
           width: "256px",
           zIndex: 1,
           backgroundColor: "background.paper",
-          boxShadow: "none",
-          border: "none",
+          boxShadow: 2,
         },
       }}
-      //   onClose={() => setOpen(false)}
+      sx={{
+        display: { xs: "none", md: "block" },
+      }}
     >
       <List>
-        {["Inicio", "Propuestas", "Eventos", "Contacto"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemText primary={text} />
+        {menuItems.map((item, index) => (
+          <ListItem
+            button
+            key={item.text}
+            component={Link}
+            to={item.path}
+            sx={{
+              cursor: "pointer",
+            }}
+          >
+            <ListItemText primary={item.text} />
           </ListItem>
         ))}
       </List>

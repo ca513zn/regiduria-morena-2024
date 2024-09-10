@@ -1,16 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   AppBar,
   Avatar,
-  Button,
-  Container,
   IconButton,
   Stack,
   Toolbar,
   Typography,
+  Menu,
+  MenuItem,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const AppHeader = () => {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <AppBar
       position="fixed"
@@ -45,9 +56,45 @@ const AppHeader = () => {
             }}
           >
             <Typography>Ricardo Taja</Typography>
-            <IconButton>
+            <IconButton onClick={handleMenuOpen}>
               <Avatar src="/taja1.png" />
             </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+              PaperProps={{
+                sx: {
+                  width: "230px",
+                },
+              }}
+            >
+              <MenuItem component={Link} to="/" onClick={handleMenuClose}>
+                Inicio
+              </MenuItem>
+              <MenuItem
+                component={Link}
+                to="/propuestas"
+                onClick={handleMenuClose}
+              >
+                Propuestas
+              </MenuItem>
+              <MenuItem
+                component={Link}
+                to="/eventos"
+                onClick={handleMenuClose}
+              >
+                Eventos
+              </MenuItem>
+              <MenuItem
+                component={Link}
+                to="/contacto"
+                onClick={handleMenuClose}
+              >
+                Contacto
+              </MenuItem>
+              <MenuItem>Salir</MenuItem>
+            </Menu>
           </Stack>
         </Stack>
       </Toolbar>
