@@ -1,24 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import { ThemeProvider } from "@emotion/react";
+import theme from "./theme";
+import AppHeader from "./components/AppHeader";
+import AppDrawer from "./components/AppDrawer";
+import { Button, Stack, useMediaQuery } from "@mui/material";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <AppHeader />
+      <AppDrawer />
+      <Stack
+        sx={{
+          overflowX: { xs: "hidden", md: "auto" },
+          marginLeft: "256px",
+          marginTop: 8,
+        }}
+      ></Stack>
+    </ThemeProvider>
   );
 }
 
