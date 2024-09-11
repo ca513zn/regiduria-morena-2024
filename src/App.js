@@ -44,6 +44,7 @@ function App() {
                 md: "264px",
               },
               marginTop: 10,
+              paddingBottom: 6,
             }}
           >
             <Routes>

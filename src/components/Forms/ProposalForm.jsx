@@ -15,6 +15,7 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
 
   const [formState, setFormState] = useState({
     name: "",
+    id: Date.now(),
     description: "",
     date_registered: new Date(),
     status: "pending",
@@ -207,18 +208,28 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
               </div>
             ))}
           </Stack>
-
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
+          <Stack
             sx={{
-              width: "200px",
-              alignSelf: "flex-end",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              alignItems: "center",
+              gap: 2,
             }}
           >
-            {proposal ? "Editar Propuesta" : "Crear Propuesta"}
-          </Button>
+            <Button
+              variant="text"
+              onClick={() => {
+                setImagePreviews([]);
+                onSubmit();
+              }}
+            >
+              Cancelar
+            </Button>
+            <Button type="submit" variant="contained" color="primary">
+              {proposal ? "Editar Petición" : "Crear Petición"}
+            </Button>
+          </Stack>
         </Stack>
       </form>
     </Container>

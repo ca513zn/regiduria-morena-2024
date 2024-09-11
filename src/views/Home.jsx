@@ -91,7 +91,7 @@ const Home = () => {
                     cursor: "pointer",
                   }}
                 >
-                  <TableCell>
+                  <TableCell sx={{ minWidth: "300px" }}>
                     <Typography
                       variant="subtitle1"
                       sx={{
@@ -159,7 +159,7 @@ const Home = () => {
       <DialogComponent
         open={open}
         onClose={() => setOpen(false)}
-        title={selectedProposal ? "Editar Propuesta" : "Nueva Petición"}
+        title={selectedProposal ? "Editar Petición" : "Nueva Petición"}
       >
         <ProposalForm
           proposal={selectedProposal}

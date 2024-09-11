@@ -1,9 +1,11 @@
 export const latest_proposals = [
   {
+    id: "123",
     name: "Renovación del Malecón",
     description:
       "Propuesta para la renovación y modernización del Malecón de Acapulco para mejorar la experiencia turística.",
-    images: ["/images/malecon_1.jpg"], // You can replace this with actual image URLs later.
+    images: [], // You can replace this with actual image URLs later.
+    static_images: ["/images/malecon_1.jpg"],
     date_registered: new Date(),
     status: "pending",
     author: "Luis Walton Aburto",
@@ -18,10 +20,12 @@ export const latest_proposals = [
     request_type: "Infraestructura",
   },
   {
+    id: "124",
     name: "Mejora de Infraestructura Vial",
     description:
       "Propuesta para mejorar la infraestructura vial en la Zona Diamante, enfocándose en la construcción de nuevos puentes y carreteras.",
-    images: ["https://via.placeholder.com/150"], // You can replace this with actual image URLs later.
+    images: [],
+    static_images: ["/images/malecon_1.jpg"],
     date_registered: new Date(),
     status: "approved",
     author: "Adela Román Ocampo",
@@ -36,10 +40,12 @@ export const latest_proposals = [
     request_type: "Transporte",
   },
   {
+    id: "125",
     name: "Parque Ecológico El Veladero",
     description:
       "Proyecto para la preservación y creación de un área ecológica protegida en El Veladero, promoviendo actividades turísticas y ambientales.",
-    images: ["https://via.placeholder.com/150"], // You can replace this with actual image URLs later.
+    images: [],
+    static_images: ["/images/malecon_1.jpg"],
     date_registered: new Date(),
     status: "rejected",
     author: "Manuel Añorve Baños",
