@@ -19,7 +19,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: "Roboto, Arial, sans-serif",
+    fontFamily: "'Chivo', Arial, sans-serif",
     button: {
       textTransform: "none", // Set textTransform to "none" for Button components
     },

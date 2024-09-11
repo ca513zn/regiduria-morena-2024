@@ -45,8 +45,11 @@ const AppHeader = () => {
               flexDirection: "row",
             }}
           >
-            <Avatar sx={{ marginRight: 2 }} src="/taja1.png" />
-            <Typography variant="h6">Regiduria Morena</Typography>
+            <Stack
+              sx={{ backgroundColor: "#fff", padding: 0.5, borderRadius: 1 }}
+            >
+              <img src="/Morena_logotipo.png" alt="Morena" width="120" />
+            </Stack>
           </Stack>
           <Stack
             sx={{
@@ -55,7 +58,13 @@ const AppHeader = () => {
               flexDirection: "row",
             }}
           >
-            <Typography>Ricardo Taja</Typography>
+            <Typography
+              sx={{
+                fontWeight: 900,
+              }}
+            >
+              Ricardo Taja
+            </Typography>
             <IconButton onClick={handleMenuOpen}>
               <Avatar src="/taja1.png" />
             </IconButton>

@@ -17,11 +17,12 @@ export const latest_proposals = [
     district_section: "112",
     phone: "+52 1 744 123 4567",
     applicant_name: "Juan Pérez",
-    request_type: "Infraestructura",
+    request_type: "Obras Públicas",
+    category: "Calles",
   },
   {
     id: "124",
-    name: "Mejora de Infraestructura Vial",
+    name: "Obras Públicas",
     description:
       "Propuesta para mejorar la infraestructura vial en la Zona Diamante, enfocándose en la construcción de nuevos puentes y carreteras.",
     images: [],
@@ -37,7 +38,8 @@ export const latest_proposals = [
     district_section: "231",
     phone: "+52 1 744 987 6543",
     applicant_name: "Carlos Rodríguez",
-    request_type: "Transporte",
+    request_type: "Obras Públicas",
+    category: "Calles",
   },
   {
     id: "125",
@@ -57,7 +59,8 @@ export const latest_proposals = [
     district_section: "023",
     phone: "+52 1 744 456 7890",
     applicant_name: "María López",
-    request_type: "Medio Ambiente",
+    request_type: "S. Públicos",
+    category: "Áreas Verdes",
   },
 ];
 
