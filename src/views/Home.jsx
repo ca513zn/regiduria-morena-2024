@@ -14,12 +14,12 @@ import {
 import React from "react";
 import { useAppContext } from "../contexts/AppContext";
 import { status_colors, statuses } from "../constants";
-import { Add, Edit, Delete } from "@mui/icons-material";
+import { Add, Delete } from "@mui/icons-material";
 import DialogComponent from "../components/DialogComponent";
 import ProposalForm from "../components/Forms/ProposalForm";
 
 const Home = () => {
-  const { proposals } = useAppContext();
+  const { proposals, setState } = useAppContext();
   const [open, setOpen] = React.useState(false);
   const [selectedProposal, setSelectedProposal] = React.useState(null);
 
@@ -29,13 +29,15 @@ const Home = () => {
   };
 
   const handleDelete = (id) => {
-    // You can implement the delete functionality here
-    console.log(`Deleting proposal with id: ${id}`);
+    setState((prevState) => ({
+      ...prevState,
+      proposals: prevState.proposals.filter((proposal) => proposal.id !== id),
+    }));
   };
 
   return (
     <>
-      <Container maxWidth="large">
+      <Container maxWidth={false}>
         <Stack
           sx={{
             justifyContent: "space-between",
@@ -72,18 +74,25 @@ const Home = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Petición</TableCell>
-                <TableCell>Fecha de Registro</TableCell>
-                <TableCell>Estatus</TableCell>
-                <TableCell>Nombre Del Solicitante</TableCell>
-                <TableCell>Dirección</TableCell>
-                <TableCell>Sección Distrital</TableCell>
-                <TableCell>Acciones</TableCell>
+                <TableCell sx={{ minWidth: "300px" }}>Petición</TableCell>
+                <TableCell sx={{ minWidth: "150px" }}>
+                  Fecha de Registro
+                </TableCell>
+                <TableCell sx={{ minWidth: "100px" }}>Estatus</TableCell>
+                <TableCell sx={{ minWidth: "180px" }}>
+                  Nombre Del Solicitante
+                </TableCell>
+                <TableCell sx={{ minWidth: "200px" }}>Dirección</TableCell>
+                <TableCell sx={{ minWidth: "100px" }}>
+                  Sección Distrital
+                </TableCell>
+                <TableCell sx={{ minWidth: "120px" }}>Acciones</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {proposals.map((proposal, index) => (
                 <TableRow
+                  onClick={() => handleEdit(proposal)}
                   key={index}
                   sx={{
                     "&:nth-of-type(odd)": {
@@ -113,6 +122,19 @@ const Home = () => {
                     >
                       {proposal.description}
                     </Typography>
+
+                    {/* Display categories using Chips */}
+                    <Stack
+                      direction="row"
+                      spacing={1}
+                      sx={{ marginTop: "0.5rem" }}
+                    >
+                      {proposal.categories && proposal.categories.length > 0
+                        ? proposal.categories.map((category, idx) => (
+                            <Chip key={idx} label={category} size="small" />
+                          ))
+                        : null}
+                    </Stack>
                   </TableCell>
                   <TableCell>
                     {new Date(proposal.date_registered).toLocaleDateString()}
@@ -139,16 +161,12 @@ const Home = () => {
                       }}
                     >
                       <IconButton
-                        aria-label="edit"
-                        color="primary"
-                        onClick={() => handleEdit(proposal)}
-                      >
-                        <Edit />
-                      </IconButton>
-                      <IconButton
                         aria-label="delete"
                         color="secondary"
-                        onClick={() => handleDelete(proposal.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(proposal.id);
+                        }}
                       >
                         <Delete />
                       </IconButton>

@@ -72,3 +72,27 @@ export const status_colors = {
   approved: "success",
   rejected: "error",
 };
+export const request_types = [
+  {
+    name: "Programas Sociales",
+    categories: ["Madres Solteras", "Incapacidad", "Becas", "Seguros"],
+  },
+  {
+    name: "Asesoría Legal y Financiera",
+    categories: ["Catastro", "L.Construccion", "Licencias"],
+  },
+  {
+    name: "Obras Públicas",
+    categories: ["Andadores", "Electrificación", "Calles"],
+  },
+  {
+    name: "S. Públicos",
+    categories: [
+      "Basura",
+      "Áreas Verdes",
+      "Imagen Urbana",
+      "CAPAMA",
+      "A. Público",
+    ],
+  },
+];

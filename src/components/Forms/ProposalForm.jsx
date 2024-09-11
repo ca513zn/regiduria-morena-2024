@@ -7,9 +7,14 @@ import {
   Typography,
   IconButton,
   Checkbox,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
 } from "@mui/material";
 import { useAppContext } from "../../contexts/AppContext";
 import { AddPhotoAlternate, Delete } from "@mui/icons-material";
+import { request_types } from "../../constants";
 
 const ProposalForm = ({ proposal = null, onSubmit }) => {
   const { setState } = useAppContext();
@@ -26,6 +31,8 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
       number: "",
       neighborhood: "",
     },
+    request_type: "", // Stores the selected request type
+    category: "", // Stores the selected category
     images: [], // Array for storing image file objects and URLs
     terms_agreed: false, // This will control the checkbox state
   });
@@ -119,6 +126,27 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
     }));
   };
 
+  // Handle changes in the request type and category selection
+  const handleRequestTypeChange = (event) => {
+    setFormState((prevState) => ({
+      ...prevState,
+      request_type: event.target.value,
+      category: "", // Reset category when request type changes
+    }));
+  };
+
+  const handleCategoryChange = (event) => {
+    setFormState((prevState) => ({
+      ...prevState,
+      category: event.target.value,
+    }));
+  };
+
+  // Find categories for the selected request type
+  const selectedRequestType = request_types.find(
+    (type) => type.name === formState.request_type
+  );
+
   return (
     <Container disableGutters>
       <form onSubmit={handleSubmit}>
@@ -170,6 +198,40 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
             fullWidth
             margin="normal"
           />
+
+          {/* Request Type Dropdown */}
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Tipo de Petición</InputLabel>
+            <Select
+              value={formState.request_type}
+              onChange={handleRequestTypeChange}
+              label="Tipo de Petición"
+            >
+              {request_types.map((type) => (
+                <MenuItem key={type.name} value={type.name}>
+                  {type.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          {/* Category Dropdown (only if a request type is selected) */}
+          {selectedRequestType && (
+            <FormControl fullWidth margin="normal">
+              <InputLabel>Categoría</InputLabel>
+              <Select
+                value={formState.category}
+                onChange={handleCategoryChange}
+                label="Categoría"
+              >
+                {selectedRequestType.categories.map((category) => (
+                  <MenuItem key={category} value={category}>
+                    {category}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
 
           {/* Image Upload */}
           <Button
