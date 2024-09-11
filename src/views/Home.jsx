@@ -10,11 +10,16 @@ import {
   Chip,
   Stack,
   IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
 } from "@mui/material";
 import React from "react";
 import { useAppContext } from "../contexts/AppContext";
 import { status_colors, statuses } from "../constants";
-import { Add, Delete } from "@mui/icons-material";
+import { Add, Delete, Image } from "@mui/icons-material";
 import DialogComponent from "../components/DialogComponent";
 import ProposalForm from "../components/Forms/ProposalForm";
 
@@ -22,6 +27,8 @@ const Home = () => {
   const { proposals, setState } = useAppContext();
   const [open, setOpen] = React.useState(false);
   const [selectedProposal, setSelectedProposal] = React.useState(null);
+  const [imageDialogOpen, setImageDialogOpen] = React.useState(false);
+  const [imagesToPreview, setImagesToPreview] = React.useState([]);
 
   const handleEdit = (proposal) => {
     setSelectedProposal(proposal);
@@ -35,6 +42,11 @@ const Home = () => {
     }));
   };
 
+  const handlePreviewImages = (images) => {
+    setImagesToPreview(images);
+    setImageDialogOpen(true);
+  };
+
   return (
     <>
       <Container maxWidth={false}>
@@ -46,7 +58,14 @@ const Home = () => {
             alignItems: "center",
           }}
         >
-          <Typography variant="h5">Peticiones</Typography>
+          <Typography
+            sx={{
+              fontWeight: 600,
+              fontSize: "1.5rem",
+            }}
+          >
+            Peticiones
+          </Typography>
           <IconButton
             aria-label="add"
             onClick={() => {
@@ -78,7 +97,6 @@ const Home = () => {
                 <TableCell sx={{ minWidth: "150px" }}>
                   Fecha de Registro
                 </TableCell>
-                <TableCell sx={{ minWidth: "100px" }}>Estatus</TableCell>
                 <TableCell sx={{ minWidth: "180px" }}>
                   Nombre Del Solicitante
                 </TableCell>
@@ -86,6 +104,9 @@ const Home = () => {
                 <TableCell sx={{ minWidth: "100px" }}>
                   Sección Distrital
                 </TableCell>
+                <TableCell sx={{ minWidth: "100px" }}>Tipo</TableCell>
+                <TableCell sx={{ minWidth: "100px" }}>Categoria</TableCell>
+                <TableCell sx={{ minWidth: "100px" }}>Estatus</TableCell>
                 <TableCell sx={{ minWidth: "120px" }}>Acciones</TableCell>
               </TableRow>
             </TableHead>
@@ -139,6 +160,14 @@ const Home = () => {
                   <TableCell>
                     {new Date(proposal.date_registered).toLocaleDateString()}
                   </TableCell>
+
+                  <TableCell>{proposal.applicant_name}</TableCell>
+                  <TableCell>
+                    {`${proposal.address.street} ${proposal.address.number}, ${proposal.address.neighborhood}`}
+                  </TableCell>
+                  <TableCell>{proposal.district_section}</TableCell>
+                  <TableCell>{proposal.request_type}</TableCell>
+                  <TableCell>{proposal.category}</TableCell>
                   <TableCell>
                     <Chip
                       label={statuses[proposal.status]}
@@ -146,20 +175,25 @@ const Home = () => {
                       variant="outlined"
                     />
                   </TableCell>
-                  <TableCell>{proposal.applicant_name}</TableCell>
-                  <TableCell>
-                    {`${proposal.address.street} ${proposal.address.number}, ${proposal.address.neighborhood}`}
-                  </TableCell>
-                  <TableCell>{proposal.district_section}</TableCell>
                   <TableCell>
                     <Stack
                       sx={{
                         display: "flex",
                         flexDirection: "row",
-                        justifyContent: "space-between",
                         alignItems: "center",
                       }}
                     >
+                      {/* Preview Images IconButton */}
+                      <IconButton
+                        aria-label="preview-images"
+                        color="primary"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handlePreviewImages(proposal.images);
+                        }}
+                      >
+                        <Image />
+                      </IconButton>
                       <IconButton
                         aria-label="delete"
                         color="secondary"
@@ -178,6 +212,46 @@ const Home = () => {
           </Table>
         </Paper>
       </Container>
+
+      {/* Image Preview Dialog */}
+      <Dialog
+        open={imageDialogOpen}
+        onClose={() => setImageDialogOpen(false)}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle>Preview Images</DialogTitle>
+        <DialogContent>
+          <Stack direction="row" spacing={2} sx={{ flexWrap: "wrap" }}>
+            {imagesToPreview.length > 0 ? (
+              imagesToPreview.map((image, index) => (
+                <img
+                  key={index}
+                  src={
+                    typeof image === "string"
+                      ? image
+                      : URL.createObjectURL(image)
+                  }
+                  alt={`Preview ${index}`}
+                  style={{
+                    width: "200px",
+                    height: "150px",
+                    objectFit: "cover",
+                    marginRight: "1rem",
+                    marginBottom: "1rem",
+                  }}
+                />
+              ))
+            ) : (
+              <Typography>No images to preview</Typography>
+            )}
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setImageDialogOpen(false)}>Close</Button>
+        </DialogActions>
+      </Dialog>
+
       <DialogComponent
         open={open}
         onClose={() => setOpen(false)}

@@ -1,8 +1,16 @@
 import React from "react";
-import { Drawer, List, ListItem, ListItemText } from "@mui/material";
-import { Link } from "react-router-dom";
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+} from "@mui/material";
+import { Link, useLocation } from "react-router-dom";
 
 const AppDrawer = () => {
+  const location = useLocation();
+
   const menuItems = [
     { text: "Inicio", path: "/" },
     { text: "Propuestas", path: "/propuestas" },
@@ -16,7 +24,7 @@ const AppDrawer = () => {
       variant="persistent"
       PaperProps={{
         sx: {
-          paddingTop: 8,
+          paddingTop: 7,
           width: "256px",
           zIndex: 1,
           backgroundColor: "background.paper",
@@ -36,12 +44,24 @@ const AppDrawer = () => {
             to={item.path}
             sx={{
               cursor: "pointer",
+              backgroundColor:
+                item.path === location.pathname ? "#e0e0e0" : "transparent",
+              color: "#000000",
             }}
           >
             <ListItemText primary={item.text} />
           </ListItem>
         ))}
       </List>
+      <Typography
+        variant="caption"
+        sx={{
+          marginTop: "calc(100vh - 30vh)",
+          paddingLeft: 1,
+        }}
+      >
+        © 2021 Morena. Todos los derechos reservados.
+      </Typography>
     </Drawer>
   );
 };

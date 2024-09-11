@@ -27,6 +27,7 @@ const AppHeader = () => {
       position="fixed"
       sx={{
         zIndex: (theme) => theme.zIndex.drawer + 1,
+        boxShadow: "none",
       }}
     >
       <Toolbar>
