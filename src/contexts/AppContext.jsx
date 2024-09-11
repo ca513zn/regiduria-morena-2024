@@ -7,7 +7,7 @@ export const useAppContext = () => useContext(AppContext);
 
 export const AppContextProvider = ({ children }) => {
   const [state, setState] = useState({
-    latest_proposals,
+    proposals: latest_proposals,
   });
   const value = { ...state, setState };
 

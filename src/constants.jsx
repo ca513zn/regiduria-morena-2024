@@ -12,6 +12,10 @@ export const latest_proposals = [
       number: "500",
       neighborhood: "Centro",
     },
+    district_section: "112",
+    phone: "+52 1 744 123 4567",
+    applicant_name: "Juan Pérez",
+    request_type: "Infraestructura",
   },
   {
     name: "Mejora de Infraestructura Vial",
@@ -26,6 +30,10 @@ export const latest_proposals = [
       number: "1000",
       neighborhood: "Zona Diamante",
     },
+    district_section: "231",
+    phone: "+52 1 744 987 6543",
+    applicant_name: "Carlos Rodríguez",
+    request_type: "Transporte",
   },
   {
     name: "Parque Ecológico El Veladero",
@@ -40,6 +48,10 @@ export const latest_proposals = [
       number: "750",
       neighborhood: "El Progreso",
     },
+    district_section: "023",
+    phone: "+52 1 744 456 7890",
+    applicant_name: "María López",
+    request_type: "Medio Ambiente",
   },
 ];
 

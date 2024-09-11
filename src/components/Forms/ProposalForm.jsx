@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { TextField, Button, Container, Stack } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Container,
+  Stack,
+  Typography,
+  IconButton,
+} from "@mui/material";
+import { useAppContext } from "../../contexts/AppContext";
+import { AddPhotoAlternate, Delete } from "@mui/icons-material";
 
 const ProposalForm = ({ proposal = null, onSubmit }) => {
+  const { setState } = useAppContext();
   // If a proposal is provided, we use it for editing; otherwise, use default values for creating a new proposal.
   const [formState, setFormState] = useState({
     name: "",
@@ -14,12 +24,16 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
       number: "",
       neighborhood: "",
     },
+    images: [], // For storing images
   });
+
+  const [imagePreviews, setImagePreviews] = useState([]);
 
   // If a proposal is passed via props, update the form state accordingly (for editing).
   useEffect(() => {
     if (proposal) {
       setFormState(proposal);
+      setImagePreviews(proposal.images || []);
     }
   }, [proposal]);
 
@@ -43,9 +57,35 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
     }
   };
 
+  const handleImageChange = (event) => {
+    const files = Array.from(event.target.files);
+    const newImages = files.map((file) => URL.createObjectURL(file));
+    setImagePreviews((prevPreviews) => [...prevPreviews, ...newImages]);
+
+    // Add the files to formState
+    setFormState((prevState) => ({
+      ...prevState,
+      images: [...prevState.images, ...files],
+    }));
+  };
+
+  const handleDeleteImage = (index) => {
+    setImagePreviews((prevPreviews) =>
+      prevPreviews.filter((_, i) => i !== index)
+    );
+    setFormState((prevState) => ({
+      ...prevState,
+      images: prevState.images.filter((_, i) => i !== index),
+    }));
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    onSubmit(formState);
+    setState((prevState) => ({
+      ...prevState,
+      proposals: [...prevState.proposals, formState],
+    }));
+    onSubmit();
   };
 
   return (
@@ -60,25 +100,9 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
           }}
         >
           <TextField
-            label="Nombre"
+            label="Nombre del Solicitante"
             name="name"
             value={formState.name}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Descripción"
-            name="description"
-            value={formState.description}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Autor"
-            name="author"
-            value={formState.author}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -107,6 +131,59 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
             fullWidth
             margin="normal"
           />
+          <TextField
+            label="Descripción"
+            name="description"
+            value={formState.description}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+
+          {/* Image Upload */}
+          <Button
+            variant="outlined"
+            component="label"
+            startIcon={<AddPhotoAlternate />}
+          >
+            Subir Imágenes
+            <input
+              type="file"
+              multiple
+              hidden
+              accept="image/*"
+              onChange={handleImageChange}
+            />
+          </Button>
+
+          {/* Image Previews */}
+          <Stack direction="row" spacing={2} sx={{ flexWrap: "wrap" }}>
+            {imagePreviews.map((image, index) => (
+              <div
+                key={index}
+                style={{ position: "relative", display: "inline-block" }}
+              >
+                <img
+                  src={image}
+                  alt={`Preview ${index}`}
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    objectFit: "cover",
+                  }}
+                />
+                <IconButton
+                  sx={{ position: "absolute", top: 0, right: 0 }}
+                  size="small"
+                  color="error"
+                  onClick={() => handleDeleteImage(index)}
+                >
+                  <Delete />
+                </IconButton>
+              </div>
+            ))}
+          </Stack>
+
           <Button
             type="submit"
             variant="contained"
