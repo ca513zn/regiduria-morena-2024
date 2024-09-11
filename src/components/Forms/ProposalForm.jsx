@@ -6,6 +6,7 @@ import {
   Stack,
   Typography,
   IconButton,
+  Checkbox,
 } from "@mui/material";
 import { useAppContext } from "../../contexts/AppContext";
 import { AddPhotoAlternate, Delete } from "@mui/icons-material";
@@ -26,6 +27,7 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
       neighborhood: "",
     },
     images: [], // Array for storing image file objects and URLs
+    terms_agreed: false, // This will control the checkbox state
   });
 
   const [imagePreviews, setImagePreviews] = useState([]);
@@ -109,8 +111,16 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
     onSubmit();
   };
 
+  const handleTermsAgreedChange = (event) => {
+    const { checked } = event.target;
+    setFormState((prevState) => ({
+      ...prevState,
+      terms_agreed: checked,
+    }));
+  };
+
   return (
-    <Container>
+    <Container disableGutters>
       <form onSubmit={handleSubmit}>
         <Stack
           direction="column"
@@ -208,14 +218,47 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
               </div>
             ))}
           </Stack>
+
+          {/* Terms and Conditions */}
           <Stack
+            direction="row"
+            alignItems="center"
+            spacing={1}
             sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "flex-end",
-              alignItems: "center",
-              gap: 2,
+              backgroundColor: "#f3f3f3",
+              color: "#444",
+              padding: 1,
+              borderRadius: 1,
             }}
+          >
+            <Checkbox
+              checked={formState.terms_agreed}
+              onChange={handleTermsAgreedChange}
+            />
+            <Stack>
+              <Typography variant="caption" gutterBottom>
+                Declaro bajo protesta de decir verdad que la información
+                proporcionada en este formulario es precisa, completa, y
+                auténtica, y asumo plena responsabilidad por su veracidad.
+              </Typography>
+              <Typography variant="caption">
+                Conforme al artículo
+                <span style={{ fontWeight: 900 }}> 247 del Código Penal</span>,
+                proporcionar información falsa o engañosa puede resultar en
+                sanciones, que incluyen{" "}
+                <span style={{ fontWeight: 900 }}>
+                  multas y penas de prisión de hasta 5 años.
+                </span>
+              </Typography>
+            </Stack>
+          </Stack>
+
+          {/* Buttons */}
+          <Stack
+            direction="row"
+            justifyContent="flex-end"
+            alignItems="center"
+            spacing={2}
           >
             <Button
               variant="text"
@@ -226,7 +269,12 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
             >
               Cancelar
             </Button>
-            <Button type="submit" variant="contained" color="primary">
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              disabled={!formState.terms_agreed}
+            >
               {proposal ? "Editar Petición" : "Crear Petición"}
             </Button>
           </Stack>

@@ -9,7 +9,6 @@ import {
   Paper,
   Chip,
   Stack,
-  Button,
   IconButton,
 } from "@mui/material";
 import React from "react";
@@ -46,17 +45,22 @@ const Home = () => {
           }}
         >
           <Typography variant="h5">Peticiones</Typography>
-          <Button
-            startIcon={<Add />}
-            variant="contained"
-            color="primary"
+          <IconButton
+            aria-label="add"
             onClick={() => {
               setOpen(true);
               setSelectedProposal(null);
             }}
+            sx={{
+              backgroundColor: "primary.main",
+              color: "#ffffff",
+              ":hover": {
+                backgroundColor: "primary.dark",
+              },
+            }}
           >
-            Nueva Propuesta
-          </Button>
+            <Add />
+          </IconButton>
         </Stack>
 
         <Paper
