@@ -39,7 +39,10 @@ function App() {
           <Stack
             sx={{
               overflowX: { xs: "hidden", md: "auto" },
-              marginLeft: "272px",
+              marginLeft: {
+                xs: 0,
+                md: "264px",
+              },
               marginTop: 10,
             }}
           >

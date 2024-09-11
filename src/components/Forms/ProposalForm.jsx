@@ -12,7 +12,7 @@ import { AddPhotoAlternate, Delete } from "@mui/icons-material";
 
 const ProposalForm = ({ proposal = null, onSubmit }) => {
   const { setState } = useAppContext();
-  // If a proposal is provided, we use it for editing; otherwise, use default values for creating a new proposal.
+
   const [formState, setFormState] = useState({
     name: "",
     description: "",
@@ -24,24 +24,27 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
       number: "",
       neighborhood: "",
     },
-    images: [], // For storing images
+    images: [], // Array for storing image file objects and URLs
   });
 
   const [imagePreviews, setImagePreviews] = useState([]);
 
-  // If a proposal is passed via props, update the form state accordingly (for editing).
+  // Handle when the form is in edit mode and a proposal is provided.
   useEffect(() => {
     if (proposal) {
       setFormState(proposal);
-      setImagePreviews(proposal.images || []);
+
+      // Set image previews using the existing URLs if editing a proposal
+      if (proposal.images) {
+        setImagePreviews(proposal.images); // Assume `proposal.images` contains URLs or file paths
+      }
     }
   }, [proposal]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    // Handle nested address fields separately
     if (name.includes("address.")) {
-      const field = name.split(".")[1]; // Get the field after 'address.'
+      const field = name.split(".")[1];
       setFormState((prevState) => ({
         ...prevState,
         address: {
@@ -59,10 +62,13 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
 
   const handleImageChange = (event) => {
     const files = Array.from(event.target.files);
-    const newImages = files.map((file) => URL.createObjectURL(file));
-    setImagePreviews((prevPreviews) => [...prevPreviews, ...newImages]);
 
-    // Add the files to formState
+    // Create object URLs for preview
+    const newPreviews = files.map((file) => URL.createObjectURL(file));
+
+    setImagePreviews((prevPreviews) => [...prevPreviews, ...newPreviews]);
+
+    // Add files to the formState
     setFormState((prevState) => ({
       ...prevState,
       images: [...prevState.images, ...files],
@@ -70,9 +76,12 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
   };
 
   const handleDeleteImage = (index) => {
+    // Remove from previews
     setImagePreviews((prevPreviews) =>
       prevPreviews.filter((_, i) => i !== index)
     );
+
+    // Remove from formState
     setFormState((prevState) => ({
       ...prevState,
       images: prevState.images.filter((_, i) => i !== index),
@@ -81,6 +90,17 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (proposal) {
+      // If editing a proposal, update the existing proposal
+      setState((prevState) => ({
+        ...prevState,
+        proposals: prevState.proposals.map((p) =>
+          p.name === proposal.name ? formState : p
+        ),
+      }));
+      onSubmit();
+      return;
+    }
     setState((prevState) => ({
       ...prevState,
       proposals: [...prevState.proposals, formState],
@@ -164,7 +184,11 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
                 style={{ position: "relative", display: "inline-block" }}
               >
                 <img
-                  src={image}
+                  src={
+                    typeof image === "string"
+                      ? image
+                      : URL.createObjectURL(image)
+                  }
                   alt={`Preview ${index}`}
                   style={{
                     width: "100px",
