@@ -335,7 +335,16 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
               type="submit"
               variant="contained"
               color="primary"
-              disabled={!formState.terms_agreed}
+              disabled={
+                !formState.terms_agreed ||
+                !formState.name ||
+                !formState.address.street ||
+                !formState.address.number ||
+                !formState.address.neighborhood ||
+                !formState.description ||
+                !formState.request_type ||
+                !formState.category
+              }
             >
               {proposal ? "Editar Petición" : "Crear Petición"}
             </Button>
