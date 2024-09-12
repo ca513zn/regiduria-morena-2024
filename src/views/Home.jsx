@@ -132,7 +132,7 @@ const Home = () => {
                         fontWeight: "bold",
                       }}
                     >
-                      {proposal.name}
+                      {proposal.title}
                     </Typography>
                     <Typography
                       gutterBottom

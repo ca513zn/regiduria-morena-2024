@@ -1,18 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Avatar,
   IconButton,
   Stack,
   Toolbar,
-  Typography,
   Menu,
   MenuItem,
+  Badge,
+  Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import { Notifications } from "@mui/icons-material";
+import { useAppContext } from "../contexts/AppContext";
 
 const AppHeader = () => {
+  const { unread_notifications, proposals } = useAppContext();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [counter, setCounter] = useState(0);
+  const [menuId, setMenuId] = useState(null);
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -21,6 +27,10 @@ const AppHeader = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+
+  useEffect(() => {
+    setCounter(unread_notifications);
+  }, [unread_notifications]);
 
   return (
     <AppBar
@@ -59,14 +69,23 @@ const AppHeader = () => {
               flexDirection: "row",
             }}
           >
-            <Typography
-              sx={{
-                fontWeight: 900,
+            <IconButton
+              onClick={(e) => {
+                setCounter(0);
+                handleMenuOpen(e);
+                setMenuId("notifications");
               }}
             >
-              Ricardo Taja
-            </Typography>
-            <IconButton onClick={handleMenuOpen}>
+              <Badge badgeContent={counter} color="error">
+                <Notifications sx={{ fill: "#fff" }} />
+              </Badge>
+            </IconButton>
+            <IconButton
+              onClick={(e) => {
+                handleMenuOpen(e);
+                setMenuId("profile");
+              }}
+            >
               <Avatar src="/taja1.png" />
             </IconButton>
             <Menu
@@ -75,35 +94,69 @@ const AppHeader = () => {
               onClose={handleMenuClose}
               PaperProps={{
                 sx: {
-                  width: "230px",
+                  width: menuId === "notifications" ? 300 : 200,
                 },
               }}
             >
-              <MenuItem component={Link} to="/" onClick={handleMenuClose}>
-                Inicio
-              </MenuItem>
-              <MenuItem
-                component={Link}
-                to="/propuestas"
-                onClick={handleMenuClose}
-              >
-                Propuestas
-              </MenuItem>
-              <MenuItem
-                component={Link}
-                to="/eventos"
-                onClick={handleMenuClose}
-              >
-                Eventos
-              </MenuItem>
-              <MenuItem
-                component={Link}
-                to="/contacto"
-                onClick={handleMenuClose}
-              >
-                Contacto
-              </MenuItem>
-              <MenuItem>Salir</MenuItem>
+              {menuId === "notifications" && (
+                <>
+                  {proposals.map((proposal, index) => (
+                    <MenuItem key={index} onClick={handleMenuClose}>
+                      <Stack
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "flex-start",
+                        }}
+                      >
+                        <Typography
+                          sx={{ fontWeight: 900, fontSize: "0.9rem" }}
+                        >
+                          {proposal.title}
+                        </Typography>
+                        <Typography
+                          sx={{
+                            fontWeight: 400,
+                            fontSize: "0.7rem",
+                            color: "text.secondary",
+                          }}
+                        >
+                          {proposal.title}
+                        </Typography>
+                      </Stack>
+                    </MenuItem>
+                  ))}
+                </>
+              )}
+              {menuId === "profile" && (
+                <>
+                  <MenuItem component={Link} to="/" onClick={handleMenuClose}>
+                    Inicio
+                  </MenuItem>
+                  <MenuItem
+                    component={Link}
+                    to="/propuestas"
+                    onClick={handleMenuClose}
+                  >
+                    Propuestas
+                  </MenuItem>
+                  <MenuItem
+                    component={Link}
+                    to="/eventos"
+                    onClick={handleMenuClose}
+                  >
+                    Eventos
+                  </MenuItem>
+                  <MenuItem
+                    component={Link}
+                    to="/contacto"
+                    onClick={handleMenuClose}
+                  >
+                    Contacto
+                  </MenuItem>
+                  <MenuItem>Salir</MenuItem>
+                </>
+              )}
             </Menu>
           </Stack>
         </Stack>

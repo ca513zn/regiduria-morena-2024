@@ -1,7 +1,7 @@
 export const latest_proposals = [
   {
     id: "123",
-    name: "Renovación del Malecón",
+    title: "Renovación del Malecón",
     description:
       "Propuesta para la renovación y modernización del Malecón de Acapulco para mejorar la experiencia turística.",
     images: [], // You can replace this with actual image URLs later.
@@ -22,7 +22,7 @@ export const latest_proposals = [
   },
   {
     id: "124",
-    name: "Obras Públicas",
+    title: "Obras Públicas",
     description:
       "Propuesta para mejorar la infraestructura vial en la Zona Diamante, enfocándose en la construcción de nuevos puentes y carreteras.",
     images: [],
@@ -43,7 +43,7 @@ export const latest_proposals = [
   },
   {
     id: "125",
-    name: "Parque Ecológico El Veladero",
+    title: "Parque Ecológico El Veladero",
     description:
       "Proyecto para la preservación y creación de un área ecológica protegida en El Veladero, promoviendo actividades turísticas y ambientales.",
     images: [],
