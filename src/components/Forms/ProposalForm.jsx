@@ -20,6 +20,8 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
   const { setState } = useAppContext();
 
   const [formState, setFormState] = useState({
+    title: "",
+    district_section: "",
     name: "",
     id: Date.now(),
     description: "",
@@ -159,6 +161,14 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
           }}
         >
           <TextField
+            label="Titulo de la Petición"
+            name="title"
+            value={formState.title}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
             label="Nombre del Solicitante"
             name="name"
             value={formState.name}
@@ -186,6 +196,15 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
             label="Colonia"
             name="address.neighborhood"
             value={formState.address.neighborhood}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+          {/* Seccion Distrital */}
+          <TextField
+            label="Sección Distrital"
+            name="district_section"
+            value={formState.district_section}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -343,7 +362,9 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
                 !formState.address.neighborhood ||
                 !formState.description ||
                 !formState.request_type ||
-                !formState.category
+                !formState.category ||
+                !formState.title ||
+                !formState.district_section
               }
             >
               {proposal ? "Editar Petición" : "Crear Petición"}
