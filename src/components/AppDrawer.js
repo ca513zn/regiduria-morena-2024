@@ -12,8 +12,7 @@ const AppDrawer = () => {
   const location = useLocation();
 
   const menuItems = [
-    { text: "Inicio", path: "/" },
-    { text: "Propuestas", path: "/propuestas" },
+    { text: "Propuestas", path: "/" },
     { text: "Eventos", path: "/eventos" },
     { text: "Contacto", path: "/contacto" },
   ];
@@ -56,7 +55,7 @@ const AppDrawer = () => {
       <Typography
         variant="caption"
         sx={{
-          marginTop: "calc(100vh - 30vh)",
+          marginTop: "calc(100vh - 26vh)",
           paddingLeft: 1,
         }}
       >

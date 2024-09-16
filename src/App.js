@@ -8,58 +8,61 @@ import Home from "./views/Home";
 import About from "./views/About"; // Example for additional routes
 import Proposals from "./views/Proposals";
 import Events from "./views/Events";
-import { AppContextProvider } from "./contexts/AppContext";
+import { useAppContext } from "./contexts/AppContext";
+import Login from "./views/Login";
 
 const routes = [
   {
     component: Home,
     path: "/",
+    auth: true,
+    admin: true,
   },
   {
     component: About,
     path: "/contacto",
-  },
-  {
-    component: Proposals,
-    path: "/propuestas",
+    auth: true,
   },
   {
     component: Events,
     path: "/eventos",
+    auth: true,
   },
 ];
 
 function App() {
+  const {
+    auth: { user = null },
+  } = useAppContext();
+  console.log(user);
   return (
-    <AppContextProvider>
-      <ThemeProvider theme={theme}>
-        <Router>
-          <AppHeader />
-          <AppDrawer />
-          <Stack
-            sx={{
-              overflowX: { xs: "hidden", md: "auto" },
-              marginLeft: {
-                xs: 0,
-                md: "264px",
-              },
-              marginTop: 10,
-              paddingBottom: 6,
-            }}
-          >
-            <Routes>
-              {routes.map((route, index) => (
-                <Route
-                  key={index}
-                  element={<route.component />}
-                  path={route.path}
-                />
-              ))}
-            </Routes>
-          </Stack>
-        </Router>
-      </ThemeProvider>
-    </AppContextProvider>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <AppHeader />
+        {user && <AppDrawer />}
+        <Stack
+          sx={{
+            overflowX: { xs: "hidden", md: "auto" },
+            marginLeft: {
+              xs: 0,
+              md: user ? "264px" : "0",
+            },
+            marginTop: 10,
+            paddingBottom: 6,
+          }}
+        >
+          <Routes>
+            {routes.map((route, index) => {
+              const { component: Component, path, auth, admin } = route;
+              if (auth && !user) {
+                return <Route key={index} element={<Login />} path={path} />;
+              }
+              return <Route key={index} element={<Component />} path={path} />;
+            })}
+          </Routes>
+        </Stack>
+      </Router>
+    </ThemeProvider>
   );
 }
 

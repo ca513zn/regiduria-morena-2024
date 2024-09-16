@@ -23,6 +23,7 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
     title: "",
     district_section: "",
     name: "",
+    applicant_name: "",
     id: Date.now(),
     description: "",
     date_registered: new Date(),
@@ -170,8 +171,8 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
           />
           <TextField
             label="Nombre del Solicitante"
-            name="name"
-            value={formState.name}
+            name="applicant_name"
+            value={formState.applicant_name}
             onChange={handleChange}
             fullWidth
             margin="normal"

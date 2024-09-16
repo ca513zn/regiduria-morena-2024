@@ -24,13 +24,14 @@ import DialogComponent from "../components/DialogComponent";
 import ProposalForm from "../components/Forms/ProposalForm";
 
 const Home = () => {
-  const { proposals, setState } = useAppContext();
+  const { proposals, setState, isAdmin } = useAppContext();
   const [open, setOpen] = React.useState(false);
   const [selectedProposal, setSelectedProposal] = React.useState(null);
   const [imageDialogOpen, setImageDialogOpen] = React.useState(false);
   const [imagesToPreview, setImagesToPreview] = React.useState([]);
 
   const handleEdit = (proposal) => {
+    if (!isAdmin) return;
     setSelectedProposal(proposal);
     setOpen(true);
   };
@@ -66,22 +67,24 @@ const Home = () => {
           >
             Peticiones
           </Typography>
-          <IconButton
-            aria-label="add"
-            onClick={() => {
-              setOpen(true);
-              setSelectedProposal(null);
-            }}
-            sx={{
-              backgroundColor: "primary.main",
-              color: "#ffffff",
-              ":hover": {
-                backgroundColor: "primary.dark",
-              },
-            }}
-          >
-            <Add />
-          </IconButton>
+          {isAdmin && (
+            <IconButton
+              aria-label="add"
+              onClick={() => {
+                setOpen(true);
+                setSelectedProposal(null);
+              }}
+              sx={{
+                backgroundColor: "primary.main",
+                color: "#ffffff",
+                ":hover": {
+                  backgroundColor: "primary.dark",
+                },
+              }}
+            >
+              <Add />
+            </IconButton>
+          )}
         </Stack>
 
         <Paper
@@ -181,6 +184,7 @@ const Home = () => {
                         display: "flex",
                         flexDirection: "row",
                         alignItems: "center",
+                        justifyContent: "çenter",
                       }}
                     >
                       {/* Preview Images IconButton */}
@@ -194,16 +198,18 @@ const Home = () => {
                       >
                         <Image />
                       </IconButton>
-                      <IconButton
-                        aria-label="delete"
-                        color="secondary"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDelete(proposal.id);
-                        }}
-                      >
-                        <Delete />
-                      </IconButton>
+                      {isAdmin && (
+                        <IconButton
+                          aria-label="delete"
+                          color="secondary"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDelete(proposal.id);
+                          }}
+                        >
+                          <Delete />
+                        </IconButton>
+                      )}
                     </Stack>
                   </TableCell>
                 </TableRow>

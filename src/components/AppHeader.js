@@ -15,7 +15,7 @@ import { Notifications } from "@mui/icons-material";
 import { useAppContext } from "../contexts/AppContext";
 
 const AppHeader = () => {
-  const { unread_notifications, proposals } = useAppContext();
+  const { unread_notifications, proposals, auth } = useAppContext();
   const [anchorEl, setAnchorEl] = useState(null);
   const [counter, setCounter] = useState(0);
   const [menuId, setMenuId] = useState(null);
@@ -62,103 +62,108 @@ const AppHeader = () => {
               <img src="/Morena_logotipo.png" alt="Morena" width="120" />
             </Stack>
           </Stack>
-          <Stack
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              flexDirection: "row",
-            }}
-          >
-            <IconButton
-              onClick={(e) => {
-                setCounter(0);
-                handleMenuOpen(e);
-                setMenuId("notifications");
+          {auth.user ? (
+            <Stack
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "row",
               }}
             >
-              <Badge badgeContent={counter} color="error">
-                <Notifications sx={{ fill: "#fff" }} />
-              </Badge>
-            </IconButton>
-            <IconButton
-              onClick={(e) => {
-                handleMenuOpen(e);
-                setMenuId("profile");
-              }}
-            >
-              <Avatar src="/taja1.png" />
-            </IconButton>
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleMenuClose}
-              PaperProps={{
-                sx: {
-                  width: menuId === "notifications" ? 300 : 200,
-                },
-              }}
-            >
-              {menuId === "notifications" && (
-                <>
-                  {proposals.map((proposal, index) => (
-                    <MenuItem key={index} onClick={handleMenuClose}>
-                      <Stack
-                        sx={{
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "flex-start",
-                        }}
-                      >
-                        <Typography
-                          sx={{ fontWeight: 900, fontSize: "0.9rem" }}
-                        >
-                          {proposal.title}
-                        </Typography>
-                        <Typography
+              <IconButton
+                onClick={(e) => {
+                  setCounter(0);
+                  handleMenuOpen(e);
+                  setMenuId("notifications");
+                }}
+              >
+                <Badge badgeContent={counter} color="error">
+                  <Notifications sx={{ fill: "#fff" }} />
+                </Badge>
+              </IconButton>
+              <IconButton
+                onClick={(e) => {
+                  handleMenuOpen(e);
+                  setMenuId("profile");
+                }}
+              >
+                <Avatar src="/taja1.png" />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+                PaperProps={{
+                  sx: {
+                    width: menuId === "notifications" ? 300 : 200,
+                  },
+                }}
+              >
+                {menuId === "notifications" && (
+                  <>
+                    {proposals.map((proposal, index) => (
+                      <MenuItem key={index} onClick={handleMenuClose}>
+                        <Stack
                           sx={{
-                            fontWeight: 400,
-                            fontSize: "0.7rem",
-                            color: "text.secondary",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "flex-start",
                           }}
                         >
-                          {proposal.title}
-                        </Typography>
-                      </Stack>
+                          <Typography
+                            sx={{ fontWeight: 900, fontSize: "0.9rem" }}
+                          >
+                            {proposal.title}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              fontWeight: 400,
+                              fontSize: "0.7rem",
+                              color: "text.secondary",
+                            }}
+                          >
+                            {proposal.title}
+                          </Typography>
+                        </Stack>
+                      </MenuItem>
+                    ))}
+                  </>
+                )}
+                {menuId === "profile" && (
+                  <>
+                    <MenuItem component={Link} to="/" onClick={handleMenuClose}>
+                      Propuestas
                     </MenuItem>
-                  ))}
-                </>
-              )}
-              {menuId === "profile" && (
-                <>
-                  <MenuItem component={Link} to="/" onClick={handleMenuClose}>
-                    Inicio
-                  </MenuItem>
-                  <MenuItem
-                    component={Link}
-                    to="/propuestas"
-                    onClick={handleMenuClose}
-                  >
-                    Propuestas
-                  </MenuItem>
-                  <MenuItem
-                    component={Link}
-                    to="/eventos"
-                    onClick={handleMenuClose}
-                  >
-                    Eventos
-                  </MenuItem>
-                  <MenuItem
-                    component={Link}
-                    to="/contacto"
-                    onClick={handleMenuClose}
-                  >
-                    Contacto
-                  </MenuItem>
-                  <MenuItem>Salir</MenuItem>
-                </>
-              )}
-            </Menu>
-          </Stack>
+                    <MenuItem
+                      component={Link}
+                      to="/eventos"
+                      onClick={handleMenuClose}
+                    >
+                      Eventos
+                    </MenuItem>
+                    <MenuItem
+                      component={Link}
+                      to="/contacto"
+                      onClick={handleMenuClose}
+                    >
+                      Contacto
+                    </MenuItem>
+                    <MenuItem>Salir</MenuItem>
+                  </>
+                )}
+              </Menu>
+            </Stack>
+          ) : (
+            <Stack
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "row",
+              }}
+            >
+              <Typography variant="h6">Bienvenidos!</Typography>
+            </Stack>
+          )}
         </Stack>
       </Toolbar>
     </AppBar>
