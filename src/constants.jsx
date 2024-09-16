@@ -19,6 +19,7 @@ export const latest_proposals = [
     applicant_name: "Juan Pérez",
     request_type: "Obras Públicas",
     category: "Calles",
+    documents: [],
   },
   {
     id: "124",
@@ -40,6 +41,7 @@ export const latest_proposals = [
     applicant_name: "Carlos Rodríguez",
     request_type: "Obras Públicas",
     category: "Calles",
+    documents: [],
   },
   {
     id: "125",
@@ -61,6 +63,7 @@ export const latest_proposals = [
     applicant_name: "María López",
     request_type: "S. Públicos",
     category: "Áreas Verdes",
+    documents: [],
   },
 ];
 

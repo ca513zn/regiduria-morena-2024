@@ -39,6 +39,7 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
     category: "", // Stores the selected category
     images: [], // Array for storing image file objects and URLs
     terms_agreed: false, // This will control the checkbox state
+    documents: [],
   });
 
   const [imagePreviews, setImagePreviews] = useState([]);
@@ -54,6 +55,23 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
       }
     }
   }, [proposal]);
+
+  const handleDocumentChange = (event) => {
+    const files = Array.from(event.target.files);
+
+    // Add files to the formState
+    setFormState((prevState) => ({
+      ...prevState,
+      documents: [...prevState.documents, ...files],
+    }));
+  };
+
+  const handleDeleteDocument = (index) => {
+    setFormState((prevState) => ({
+      ...prevState,
+      documents: prevState.documents.filter((_, i) => i !== index),
+    }));
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -264,6 +282,21 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
             </FormControl>
           )}
 
+          <Button
+            variant="outlined"
+            component="label"
+            startIcon={<AddPhotoAlternate />} // You can replace this with another icon if needed
+          >
+            Subir Documentos
+            <input
+              type="file"
+              multiple
+              hidden
+              accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+              onChange={handleDocumentChange}
+            />
+          </Button>
+
           {/* Image Upload */}
           <Button
             variant="outlined"
@@ -281,6 +314,11 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
           </Button>
 
           {/* Image Previews */}
+          {imagePreviews?.length > 0 && (
+            <Typography variant="caption" gutterBottom>
+              Imagenes Adjuntas:
+            </Typography>
+          )}
           <Stack direction="row" spacing={2} sx={{ flexWrap: "wrap" }}>
             {imagePreviews.map((image, index) => (
               <div
@@ -309,6 +347,41 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
                   <Delete />
                 </IconButton>
               </div>
+            ))}
+          </Stack>
+
+          <Stack direction="column" spacing={2} sx={{ flexWrap: "wrap" }}>
+            {formState.documents?.length > 0 && (
+              <Typography variant="caption" gutterBottom>
+                Documentos Adjuntos:
+              </Typography>
+            )}
+            {formState.documents.map((document, index) => (
+              <Stack
+                key={index}
+                sx={{
+                  backgroundColor: "#f3f3f3",
+                  color: "#444",
+                  padding: 1,
+                  borderRadius: 1,
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Typography variant="body2">
+                  {document.name || `Documento ${index + 1}`}
+                </Typography>
+                <IconButton
+                  // sx={{ position: "absolute", top: 0, right: 0 }}
+                  size="small"
+                  color="error"
+                  onClick={() => handleDeleteDocument(index)}
+                >
+                  <Delete />
+                </IconButton>
+              </Stack>
             ))}
           </Stack>
 
