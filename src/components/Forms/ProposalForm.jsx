@@ -34,6 +34,7 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
       number: "",
       neighborhood: "",
     },
+    phone: "",
     request_type: "", // Stores the selected request type
     category: "", // Stores the selected category
     images: [], // Array for storing image file objects and URLs
@@ -108,7 +109,7 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
       setState((prevState) => ({
         ...prevState,
         proposals: prevState.proposals.map((p) =>
-          p.name === proposal.name ? formState : p
+          p.id === proposal.id ? formState : p
         ),
       }));
       onSubmit();
@@ -173,6 +174,16 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
             label="Nombre del Solicitante"
             name="applicant_name"
             value={formState.applicant_name}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+
+          {/* phone */}
+          <TextField
+            label="Teléfono"
+            name="phone"
+            value={formState.phone}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -357,7 +368,7 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
               color="primary"
               disabled={
                 !formState.terms_agreed ||
-                !formState.name ||
+                !formState.applicant_name ||
                 !formState.address.street ||
                 !formState.address.number ||
                 !formState.address.neighborhood ||
@@ -367,6 +378,9 @@ const ProposalForm = ({ proposal = null, onSubmit }) => {
                 !formState.title ||
                 !formState.district_section
               }
+              onClick={() => {
+                console.log(formState);
+              }}
             >
               {proposal ? "Editar Petición" : "Crear Petición"}
             </Button>

@@ -101,7 +101,7 @@ const Home = () => {
                   Fecha de Registro
                 </TableCell>
                 <TableCell sx={{ minWidth: "180px" }}>
-                  Nombre Del Solicitante
+                  Contacto del Solicitante
                 </TableCell>
                 <TableCell sx={{ minWidth: "200px" }}>Dirección</TableCell>
                 <TableCell sx={{ minWidth: "100px" }}>
@@ -164,7 +164,20 @@ const Home = () => {
                     {new Date(proposal.date_registered).toLocaleDateString()}
                   </TableCell>
 
-                  <TableCell>{proposal.applicant_name}</TableCell>
+                  <TableCell>
+                    <Stack
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
+                      }}
+                    >
+                      <Typography>{proposal.applicant_name}</Typography>
+                      <Typography variant="caption">
+                        {proposal.phone}
+                      </Typography>
+                    </Stack>
+                  </TableCell>
                   <TableCell>
                     {`${proposal.address.street} ${proposal.address.number}, ${proposal.address.neighborhood}`}
                   </TableCell>
