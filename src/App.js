@@ -6,10 +6,10 @@ import AppDrawer from "./components/AppDrawer";
 import { Stack } from "@mui/material";
 import Home from "./views/Home";
 import About from "./views/About"; // Example for additional routes
-import Proposals from "./views/Proposals";
 import Events from "./views/Events";
 import { useAppContext } from "./contexts/AppContext";
 import Login from "./views/Login";
+import { useEffect } from "react";
 
 const routes = [
   {
@@ -33,8 +33,15 @@ const routes = [
 function App() {
   const {
     auth: { user = null },
+    setAuth,
   } = useAppContext();
-  console.log(user);
+  useEffect(() => {
+    //check if local storage has localStorage.setItem("user", JSON.stringify(user));
+    const user = localStorage.getItem("user");
+    if (user) {
+      setAuth(JSON.parse(user));
+    }
+  }, [setAuth]);
   return (
     <ThemeProvider theme={theme}>
       <Router>

@@ -15,7 +15,7 @@ import { Notifications } from "@mui/icons-material";
 import { useAppContext } from "../contexts/AppContext";
 
 const AppHeader = () => {
-  const { unread_notifications, proposals, auth } = useAppContext();
+  const { unread_notifications, proposals, auth, setAuth } = useAppContext();
   const { user } = auth;
   const [anchorEl, setAnchorEl] = useState(null);
   const [counter, setCounter] = useState(0);
@@ -167,7 +167,15 @@ const AppHeader = () => {
                     >
                       Contacto
                     </MenuItem>
-                    <MenuItem>Salir</MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        //remove local storage
+                        localStorage.removeItem("user");
+                        setAuth(null);
+                      }}
+                    >
+                      Salir
+                    </MenuItem>
                   </>
                 )}
               </Menu>
