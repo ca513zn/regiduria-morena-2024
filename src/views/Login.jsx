@@ -56,12 +56,19 @@ const Login = () => {
   return (
     <Grid2 container direction="column" alignItems="center" spacing={2}>
       <Grid2 item>
-        <Stack sx={{ backgroundColor: "#fff", padding: 0.5, borderRadius: 1 }}>
+        <Stack
+          sx={{
+            backgroundColor: "#fff",
+            padding: 0.5,
+            borderRadius: 1,
+            marginTop: 8,
+          }}
+        >
           <img src="/Morena_logotipo.png" alt="Morena" width="300" />
         </Stack>
       </Grid2>
       <Grid2 item>
-        <Typography variant="h6">
+        <Typography variant="body1">
           Para ver esta página, por favor acceda.
         </Typography>
       </Grid2>
@@ -110,6 +117,17 @@ const Login = () => {
         <Button variant="contained" color="primary" onClick={handleLogin}>
           Iniciar sesión
         </Button>
+      </Grid2>
+      {/* All rights Reserved */}
+      <Grid2 item>
+        <Typography
+          variant="caption"
+          sx={{
+            color: "#666",
+          }}
+        >
+          © 2024 Morena Acapulco. Todos los derechos reservados.
+        </Typography>
       </Grid2>
     </Grid2>
   );

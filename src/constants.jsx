@@ -65,9 +65,9 @@ export const latest_proposals = [
 ];
 
 export const statuses = {
-  pending: "Pendiente",
-  approved: "Aprobada",
-  rejected: "Rechazada",
+  pending: "En Tramite",
+  approved: "Aprobado",
+  rejected: "Rechazado",
 };
 
 export const status_colors = {

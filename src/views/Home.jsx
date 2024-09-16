@@ -15,10 +15,11 @@ import {
   DialogContent,
   DialogActions,
   Button,
+  TextField,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useAppContext } from "../contexts/AppContext";
-import { status_colors, statuses } from "../constants";
+import { latest_proposals, status_colors, statuses } from "../constants";
 import { Add, Delete, Image } from "@mui/icons-material";
 import DialogComponent from "../components/DialogComponent";
 import ProposalForm from "../components/Forms/ProposalForm";
@@ -29,6 +30,11 @@ const Home = () => {
   const [selectedProposal, setSelectedProposal] = React.useState(null);
   const [imageDialogOpen, setImageDialogOpen] = React.useState(false);
   const [imagesToPreview, setImagesToPreview] = React.useState([]);
+  const [filteredProposals, setFilteredProposals] = React.useState(proposals);
+
+  useEffect(() => {
+    setFilteredProposals(proposals);
+  }, [proposals]);
 
   const handleEdit = (proposal) => {
     if (!isAdmin) return;
@@ -48,6 +54,39 @@ const Home = () => {
     setImageDialogOpen(true);
   };
 
+  const handleSearchByStatusorDistrict = (e) => {
+    const value = e.target.value
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, ""); // normalize input
+    if (value === "") {
+      setFilteredProposals(proposals);
+      return;
+    }
+    const filtered = proposals.filter((proposal) => {
+      const requestType = proposal.request_type
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+      const category = proposal.category
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+      const districtSection = proposal.district_section
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+
+      return (
+        requestType.includes(value) ||
+        category.includes(value) ||
+        districtSection.includes(value)
+      );
+    });
+
+    setFilteredProposals(filtered);
+  };
+
   return (
     <>
       <Container maxWidth={false}>
@@ -57,6 +96,7 @@ const Home = () => {
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
+            marginTop: 1,
           }}
         >
           <Typography
@@ -67,6 +107,16 @@ const Home = () => {
           >
             Peticiones
           </Typography>
+          <Stack>
+            {/* text search input */}
+            <TextField
+              label="Buscar"
+              variant="outlined"
+              size="small"
+              sx={{ width: "300px" }}
+              onChange={handleSearchByStatusorDistrict}
+            />
+          </Stack>
           {isAdmin && (
             <IconButton
               aria-label="add"
@@ -96,6 +146,9 @@ const Home = () => {
           <Table>
             <TableHead>
               <TableRow>
+                <TableCell sx={{ minWidth: "60px" }}>
+                  Sección Distrital
+                </TableCell>
                 <TableCell sx={{ minWidth: "300px" }}>Petición</TableCell>
                 <TableCell sx={{ minWidth: "150px" }}>
                   Fecha de Registro
@@ -105,16 +158,35 @@ const Home = () => {
                 </TableCell>
                 <TableCell sx={{ minWidth: "200px" }}>Dirección</TableCell>
                 <TableCell sx={{ minWidth: "100px" }}>
-                  Sección Distrital
+                  Tipo - Categoria
                 </TableCell>
-                <TableCell sx={{ minWidth: "100px" }}>Tipo</TableCell>
-                <TableCell sx={{ minWidth: "100px" }}>Categoria</TableCell>
                 <TableCell sx={{ minWidth: "100px" }}>Estatus</TableCell>
                 <TableCell sx={{ minWidth: "120px" }}>Acciones</TableCell>
               </TableRow>
             </TableHead>
+            {
+              //no proposals found
+              filteredProposals.length === 0 && (
+                <TableBody>
+                  <TableRow>
+                    <TableCell colSpan={8}>
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          textAlign: "center",
+                          marginTop: "1rem",
+                          color: "gray",
+                        }}
+                      >
+                        No se encontraron peticiones
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              )
+            }
             <TableBody>
-              {proposals.map((proposal, index) => (
+              {filteredProposals.map((proposal, index) => (
                 <TableRow
                   onClick={() => handleEdit(proposal)}
                   key={index}
@@ -128,6 +200,7 @@ const Home = () => {
                     cursor: "pointer",
                   }}
                 >
+                  <TableCell>{proposal.district_section}</TableCell>
                   <TableCell sx={{ minWidth: "300px" }}>
                     <Typography
                       variant="subtitle1"
@@ -181,9 +254,20 @@ const Home = () => {
                   <TableCell>
                     {`${proposal.address.street} ${proposal.address.number}, ${proposal.address.neighborhood}`}
                   </TableCell>
-                  <TableCell>{proposal.district_section}</TableCell>
-                  <TableCell>{proposal.request_type}</TableCell>
-                  <TableCell>{proposal.category}</TableCell>
+                  <TableCell>
+                    <Stack
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
+                      }}
+                    >
+                      <Typography>{proposal.request_type}</Typography>
+                      <Typography variant="caption">
+                        {proposal.category}
+                      </Typography>
+                    </Stack>
+                  </TableCell>
                   <TableCell>
                     <Chip
                       label={statuses[proposal.status]}
