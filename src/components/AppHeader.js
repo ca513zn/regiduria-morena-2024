@@ -16,6 +16,7 @@ import { useAppContext } from "../contexts/AppContext";
 
 const AppHeader = () => {
   const { unread_notifications, proposals, auth } = useAppContext();
+  const { user } = auth;
   const [anchorEl, setAnchorEl] = useState(null);
   const [counter, setCounter] = useState(0);
   const [menuId, setMenuId] = useState(null);
@@ -87,7 +88,13 @@ const AppHeader = () => {
                   setMenuId("profile");
                 }}
               >
-                <Avatar src="/taja1.png" />
+                <Avatar
+                  src={user.avatar}
+                  sx={{
+                    height: 50,
+                    width: 50,
+                  }}
+                />
               </IconButton>
               <Menu
                 anchorEl={anchorEl}

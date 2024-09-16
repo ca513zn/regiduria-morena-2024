@@ -5,6 +5,23 @@ import Grid2 from "@mui/material/Grid2";
 
 const users = ["ricardotaja", "josejuan"];
 
+const profiles = [
+  {
+    name: "Ricardo Taja",
+    username: "ricardotaja",
+    password: "acapulco",
+    admin: true,
+    avatar: "/taja1.png",
+  },
+  {
+    name: "José Juan",
+    username: "josejuan",
+    password: "acapulco",
+    admin: false,
+    avatar: "https://i.pravatar.cc/150?img=52.png",
+  },
+];
+
 const Login = () => {
   const { setAuth } = useAppContext();
   const [username, setUsername] = useState("");
@@ -22,17 +39,11 @@ const Login = () => {
     let user = {};
 
     if (username === "ricardotaja") {
-      user = {
-        name: "Ricardo Taja",
-        admin: true,
-      };
+      user = profiles[0];
     }
 
     if (username === "josejuan") {
-      user = {
-        name: "José Juan",
-        admin: false,
-      };
+      user = profiles[1];
     }
 
     // Store the authenticated user in local storage
