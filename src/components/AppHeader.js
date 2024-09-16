@@ -60,8 +60,20 @@ const AppHeader = () => {
             <Stack
               sx={{ backgroundColor: "#fff", padding: 0.5, borderRadius: 1 }}
             >
-              <img src="/Morena_logotipo.png" alt="Morena" width="120" />
+              <img src="/Morena_logotipo.png" alt="Morena" width="100" />
             </Stack>
+            <Typography
+              sx={{
+                fontSize: "0.8rem",
+                display: {
+                  xs: "none",
+                  md: "block",
+                },
+                marginLeft: 1,
+              }}
+            >
+              C.P. Angel Mejía Álvarez - Regidor
+            </Typography>
           </Stack>
           {auth.user ? (
             <Stack
