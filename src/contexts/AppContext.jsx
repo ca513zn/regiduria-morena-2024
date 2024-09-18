@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useMemo, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 import { latest_proposals } from "../constants";
 
 const AppContext = createContext();
@@ -16,9 +22,9 @@ export const AppContextProvider = ({ children }) => {
 
   const isAdmin = useMemo(() => state.auth.user?.admin, [state.auth.user]);
 
-  const setAuth = (user) => {
+  const setAuth = useCallback((user) => {
     setState({ ...state, auth: { user } });
-  };
+  }, []);
 
   const value = { ...state, setState, setAuth, isAdmin };
 

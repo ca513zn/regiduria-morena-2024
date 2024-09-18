@@ -19,10 +19,11 @@ import {
 } from "@mui/material";
 import React, { useEffect } from "react";
 import { useAppContext } from "../contexts/AppContext";
-import { latest_proposals, status_colors, statuses } from "../constants";
+import { status_colors, statuses } from "../constants";
 import { Add, Delete, Image } from "@mui/icons-material";
 import DialogComponent from "../components/DialogComponent";
 import ProposalForm from "../components/Forms/ProposalForm";
+import CardComponent from "../components/CardComponent";
 
 const Home = () => {
   const { proposals, setState, isAdmin } = useAppContext();
@@ -165,6 +166,10 @@ const Home = () => {
           sx={{
             marginTop: "1rem",
             overflowX: "auto",
+            display: {
+              xs: "none",
+              sm: "block",
+            },
           }}
         >
           <Table>
@@ -338,6 +343,30 @@ const Home = () => {
             </TableBody>
           </Table>
         </Paper>
+        {filteredProposals.length > 0 && (
+          <>
+            <Stack
+              sx={{
+                display: {
+                  xs: "flex",
+                  sm: "none",
+                },
+                gap: 2,
+                marginTop: "1rem",
+              }}
+            >
+              {filteredProposals.map((proposal, index) => (
+                <CardComponent
+                  handlePreviewImages={handlePreviewImages}
+                  handleEdit={handleEdit}
+                  handleDelete={handleDelete}
+                  key={index}
+                  data={proposal}
+                />
+              ))}
+            </Stack>
+          </>
+        )}
       </Container>
 
       {/* Image Preview Dialog */}
