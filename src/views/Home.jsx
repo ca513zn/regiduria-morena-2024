@@ -107,7 +107,14 @@ const Home = () => {
           >
             Peticiones
           </Typography>
-          <Stack>
+          <Stack
+            sx={{
+              display: {
+                xs: "none",
+                sm: "flex",
+              },
+            }}
+          >
             {/* text search input */}
             <TextField
               label="Buscar"
@@ -136,7 +143,24 @@ const Home = () => {
             </IconButton>
           )}
         </Stack>
-
+        <Stack
+          sx={{
+            display: {
+              xs: "flex",
+              sm: "none",
+            },
+            marginTop: "0.8rem",
+          }}
+        >
+          {/* text search input */}
+          <TextField
+            label="Buscar"
+            variant="outlined"
+            size="small"
+            onChange={handleSearchByStatusorDistrict}
+            fullWidth
+          />
+        </Stack>
         <Paper
           sx={{
             marginTop: "1rem",
