@@ -151,7 +151,7 @@ const AppHeader = () => {
                 {menuId === "profile" && (
                   <>
                     <MenuItem component={Link} to="/" onClick={handleMenuClose}>
-                      Propuestas
+                      Peticiones
                     </MenuItem>
                     <MenuItem
                       component={Link}

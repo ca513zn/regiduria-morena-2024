@@ -12,7 +12,7 @@ const AppDrawer = () => {
   const location = useLocation();
 
   const menuItems = [
-    { text: "Propuestas", path: "/" },
+    { text: "Peticiones", path: "/" },
     { text: "Eventos", path: "/eventos" },
     { text: "Contacto", path: "/contacto" },
   ];
